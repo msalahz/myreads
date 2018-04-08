@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 // eslint-disable-next-line react/prefer-stateless-function
-class SearchBooks extends React.Component {
+class BookSearch extends React.Component {
   render() {
     return (
       <div className="search-books">
@@ -30,4 +30,4 @@ class SearchBooks extends React.Component {
   }
 }
 
-export default SearchBooks;
+export default BookSearch;

@@ -2,7 +2,7 @@ import React from 'react';
 import { object, func } from 'prop-types';
 import BookshelfChanger from './BookshelfChanger';
 
-const BookCard = ({ book, updateBookshelf }) => (
+const BookCard = ({ book, updateBookShelf }) => (
   <li>
     <div className="book">
       <div className="book-top">
@@ -14,7 +14,7 @@ const BookCard = ({ book, updateBookshelf }) => (
             backgroundImage: `url("${book.imageLinks.thumbnail}")`
           }}
         />
-        <BookshelfChanger book={book} updateBookshelf={updateBookshelf} />
+        <BookshelfChanger book={book} updateBookShelf={updateBookShelf} />
       </div>
       <div className="book-title">{book.title}</div>
       <div className="book-authors">{book.authors.join(', ')}</div>
@@ -24,7 +24,7 @@ const BookCard = ({ book, updateBookshelf }) => (
 
 BookCard.propTypes = {
   book: object.isRequired,
-  updateBookshelf: func.isRequired
+  updateBookShelf: func.isRequired
 };
 
 export default BookCard;

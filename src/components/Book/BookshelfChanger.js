@@ -3,8 +3,8 @@ import { object, func } from 'prop-types';
 
 class BookshelfChanger extends React.Component {
   handleChange = e => {
-    const { book, updateBookshelf } = this.props;
-    updateBookshelf(book, e.target.value);
+    const { book, updateBookShelf } = this.props;
+    updateBookShelf(book, e.target.value);
   };
 
   render() {
@@ -28,7 +28,7 @@ class BookshelfChanger extends React.Component {
 
 BookshelfChanger.propTypes = {
   book: object.isRequired,
-  updateBookshelf: func.isRequired
+  updateBookShelf: func.isRequired
 };
 
 export default BookshelfChanger;

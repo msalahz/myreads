@@ -17,7 +17,7 @@ class BooksApp extends React.Component {
     );
   }
 
-  updateBookshelf = (book, shelf) => {
+  updateBookShelf = (book, shelf) => {
     BooksAPI.update(book, shelf).then(updatedBooks => {
       const updatedShelf = updatedBooks[shelf];
       if (
@@ -38,7 +38,7 @@ class BooksApp extends React.Component {
     <BookList
       books={this.state.books}
       loading={this.state.loading}
-      updateBookshelf={this.updateBookshelf}
+      updateBookShelf={this.updateBookShelf}
     />
   );
 

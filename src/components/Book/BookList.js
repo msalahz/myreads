@@ -10,7 +10,7 @@ const currentlyReadingBooks = bookshelfBooks('currentlyReading');
 const wantToReadBooks = bookshelfBooks('wantToRead');
 const readBooks = bookshelfBooks('read');
 
-const BookList = ({ loading, books, updateBookshelf }) => (
+const BookList = ({ loading, books, updateBookShelf }) => (
   <div className="list-books">
     <div className="list-books-title">
       <h1>MyReads</h1>
@@ -23,7 +23,7 @@ const BookList = ({ loading, books, updateBookshelf }) => (
             <Bookshelf
               loading={loading}
               books={currentlyReadingBooks(books)}
-              updateBookshelf={updateBookshelf}
+              updateBookShelf={updateBookShelf}
             />
           </BookshelfLoadingBlacholder>
         </div>
@@ -33,7 +33,7 @@ const BookList = ({ loading, books, updateBookshelf }) => (
             <Bookshelf
               loading={loading}
               books={wantToReadBooks(books)}
-              updateBookshelf={updateBookshelf}
+              updateBookShelf={updateBookShelf}
             />
           </BookshelfLoadingBlacholder>
         </div>
@@ -43,7 +43,7 @@ const BookList = ({ loading, books, updateBookshelf }) => (
             <Bookshelf
               loading={loading}
               books={readBooks(books)}
-              updateBookshelf={updateBookshelf}
+              updateBookShelf={updateBookShelf}
             />
           </BookshelfLoadingBlacholder>
         </div>
@@ -58,7 +58,7 @@ const BookList = ({ loading, books, updateBookshelf }) => (
 BookList.propTypes = {
   books: array.isRequired,
   loading: bool.isRequired,
-  updateBookshelf: func.isRequired
+  updateBookShelf: func.isRequired
 };
 
 export default BookList;

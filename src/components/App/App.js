@@ -5,8 +5,6 @@ import BookSearch from '../Book/BookSearch';
 import BookList from '../Book/BookList';
 import './App.css';
 
-const { resolve, reject } = Promise;
-
 class BooksApp extends React.Component {
   state = {
     books: [],
@@ -30,9 +28,9 @@ class BooksApp extends React.Component {
         const oldBooks = books.filter(({ id }) => id !== updatedBook.id);
         return { books: [...oldBooks, updatedBook] };
       });
-      return resolve();
+      return Promise.resolve(this.state.books);
     }
-    return reject('Invalid bookshelf');
+    return Promise.reject(new Error('Invalid bookshelf'));
   };
 
   renderBookList = () => (

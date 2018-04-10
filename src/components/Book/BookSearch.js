@@ -50,7 +50,9 @@ class BookSearch extends React.Component {
           this.resetState();
         }
       } catch (err) {
-        console.log(err);
+        if (err.message !== 'Request canceled') {
+          throw err;
+        }
       }
     } else {
       this.resetState();

@@ -2,13 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { array, func, bool } from 'prop-types';
 import Bookshelf from './Bookshelf';
-import BookshelfLoadingBlacholder from './BookshelfLoadingPlacholder';
-
-const bookshelfBooks = shelf => books =>
-  books.filter(book => book.shelf === shelf);
-const currentlyReadingBooks = bookshelfBooks('currentlyReading');
-const wantToReadBooks = bookshelfBooks('wantToRead');
-const readBooks = bookshelfBooks('read');
+import BookshelfLoadingPlaceholder from './BookshelfLoadingPlaceholder';
+import * as Helpers from '../../Helpers';
 
 const BookList = ({ loading, books, updateBookShelf }) => (
   <div className="list-books">
@@ -19,33 +14,33 @@ const BookList = ({ loading, books, updateBookShelf }) => (
       <div>
         <div className="bookshelf">
           <h2 className="bookshelf-title">Currently Reading</h2>
-          <BookshelfLoadingBlacholder loading={loading}>
+          <BookshelfLoadingPlaceholder loading={loading}>
             <Bookshelf
               loading={loading}
-              books={currentlyReadingBooks(books)}
+              books={Helpers.currentlyReadingBooks(books)}
               updateBookShelf={updateBookShelf}
             />
-          </BookshelfLoadingBlacholder>
+          </BookshelfLoadingPlaceholder>
         </div>
         <div className="bookshelf">
           <h2 className="bookshelf-title">Want to Read</h2>
-          <BookshelfLoadingBlacholder loading={loading}>
+          <BookshelfLoadingPlaceholder loading={loading}>
             <Bookshelf
               loading={loading}
-              books={wantToReadBooks(books)}
+              books={Helpers.wantToReadBooks(books)}
               updateBookShelf={updateBookShelf}
             />
-          </BookshelfLoadingBlacholder>
+          </BookshelfLoadingPlaceholder>
         </div>
         <div className="bookshelf">
           <h2 className="bookshelf-title">Read</h2>
-          <BookshelfLoadingBlacholder loading={loading}>
+          <BookshelfLoadingPlaceholder loading={loading}>
             <Bookshelf
               loading={loading}
-              books={readBooks(books)}
+              books={Helpers.readBooks(books)}
               updateBookShelf={updateBookShelf}
             />
-          </BookshelfLoadingBlacholder>
+          </BookshelfLoadingPlaceholder>
         </div>
       </div>
     </div>

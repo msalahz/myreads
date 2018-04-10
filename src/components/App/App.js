@@ -5,6 +5,8 @@ import BookSearch from '../Book/BookSearch';
 import BookList from '../Book/BookList';
 import './App.css';
 
+const { resolve, reject } = Promise;
+
 class BooksApp extends React.Component {
   state = {
     books: [],
@@ -17,21 +19,20 @@ class BooksApp extends React.Component {
     );
   }
 
-  updateBookShelf = (book, shelf) => {
-    BooksAPI.update(book, shelf).then(updatedBooks => {
-      const updatedShelf = updatedBooks[shelf];
-      if (
-        shelf === 'none' ||
-        (updatedShelf && updatedShelf.includes(book.id))
-      ) {
-        const updatedBook = { ...book, shelf };
+  updateBookShelf = async (book, shelf) => {
+    const updatedBooks = await BooksAPI.update(book, shelf);
+    const updatedShelf = updatedBooks[shelf];
 
-        this.setState(({ books }) => {
-          const oldBooks = books.filter(({ id }) => id !== updatedBook.id);
-          return { books: [...oldBooks, updatedBook] };
-        });
-      }
-    });
+    if (shelf === 'none' || (updatedShelf && updatedShelf.includes(book.id))) {
+      const updatedBook = { ...book, shelf };
+
+      this.setState(({ books }) => {
+        const oldBooks = books.filter(({ id }) => id !== updatedBook.id);
+        return { books: [...oldBooks, updatedBook] };
+      });
+      return resolve();
+    }
+    return reject('Invalid bookshelf');
   };
 
   renderBookList = () => (

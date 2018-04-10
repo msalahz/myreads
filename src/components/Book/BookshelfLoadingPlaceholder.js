@@ -1,5 +1,5 @@
 import React from 'react';
-import BookCardLoadingPlaceholder from './BookCardLoadingPlacholder';
+import BookCardLoadingPlaceholder from './BookCardLoadingPlaceholder';
 
 const renderLoading = () => (
   <div className="bookshelf-books">

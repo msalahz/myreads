@@ -17,20 +17,15 @@ class BooksApp extends React.Component {
     );
   }
 
-  updateBookShelf = async (book, shelf) => {
-    const updatedBooks = await BooksAPI.update(book, shelf);
-    const updatedShelf = updatedBooks[shelf];
-
-    if (shelf === 'none' || (updatedShelf && updatedShelf.includes(book.id))) {
-      const updatedBook = { ...book, shelf };
-
-      this.setState(({ books }) => {
-        const oldBooks = books.filter(({ id }) => id !== updatedBook.id);
-        return { books: [...oldBooks, updatedBook] };
+  updateBookShelf = (book, shelf) => {
+    if (book.shelf !== shelf) {
+      BooksAPI.update(book, shelf).then(() => {
+        book.shelf = shelf;
+        this.setState(prevState => ({
+          books: prevState.books.filter(b => b.id !== book.id).concat([book])
+        }));
       });
-      return Promise.resolve(this.state.books);
     }
-    return Promise.reject(new Error('Invalid bookshelf'));
   };
 
   renderBookList = () => (

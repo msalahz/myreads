@@ -6,7 +6,6 @@ import BookshelfLoadingPlaceholder from './BookshelfLoadingPlaceholder';
 import * as BooksAPI from '../../BooksAPI';
 import { makeCancelable } from '../../Helpers';
 
-// eslint-disable-next-line react/prefer-stateless-function
 class BookSearch extends React.Component {
   state = {
     query: '',
@@ -14,8 +13,18 @@ class BookSearch extends React.Component {
     loading: false
   };
 
-  resetState = () =>
-    this.setState(() => ({ books: [], loading: false }), () => {});
+  componentDidUpdate(prevProps) {
+    const { stringify } = JSON;
+    const { bookshelfBooks } = this.props;
+    const prevBookshelfBooks = prevProps.bookshelfBooks;
+
+    if (
+      stringify(prevBookshelfBooks) !== stringify(bookshelfBooks) &&
+      this.state.query !== ''
+    ) {
+      this.updateState(this.state.books);
+    }
+  }
 
   updateState = books => {
     const { bookshelfBooks } = this.props;
@@ -23,49 +32,50 @@ class BookSearch extends React.Component {
       (acc, book) => ({ ...acc, [book.id]: book }),
       {}
     );
-    this.setState(() => {
-      const booksWithShelf = books.map(
-        book => (bookshelfBooksObj[book.id] ? bookshelfBooksObj[book.id] : book)
-      );
-      return { books: booksWithShelf, loading: false };
-    });
+
+    this.setState(() => ({
+      books: books.map(
+        b => (bookshelfBooksObj[b.id] ? bookshelfBooksObj[b.id] : b)
+      ),
+      loading: false
+    }));
   };
 
-  handleQueryChange = async e => {
+  resetState = () =>
+    this.setState(() => ({ books: [], loading: false }), () => {});
+
+  handleQueryChange = e => {
     const query = e.target.value;
     this.setState(() => ({ query, loading: true }));
 
-    if (query) {
+    if (query !== '') {
       if (this.request && this.request.cancel) {
         this.request.cancel();
       }
 
       this.request = makeCancelable(BooksAPI.search(query));
-      try {
-        const books = await this.request.promise.catch();
-
-        if (Array.isArray(books)) {
-          this.updateState(books);
-        } else {
-          this.resetState();
-        }
-      } catch (err) {
-        if (err.message !== 'Request canceled') {
-          throw err;
-        }
-      }
+      this.request.promise
+        .then(books => {
+          if (Array.isArray(books)) {
+            this.updateState(books);
+          } else {
+            this.resetState();
+          }
+        })
+        .catch(err => {
+          if (err.message !== 'Request canceled') {
+            throw err;
+          }
+        });
     } else {
       this.resetState();
     }
   };
 
-  handleUpdateBookShelf = async (book, shelf) => {
-    await this.props.updateBookShelf(book, shelf).catch();
-    this.updateState(this.state.books);
-  };
-
   render() {
+    const { updateBookShelf } = this.props;
     const { query, books, loading } = this.state;
+
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -89,7 +99,7 @@ class BookSearch extends React.Component {
                   <BookCard
                     key={book.id}
                     book={book}
-                    updateBookShelf={this.handleUpdateBookShelf}
+                    updateBookShelf={updateBookShelf}
                   />
                 ))}
             </BookshelfLoadingPlaceholder>
